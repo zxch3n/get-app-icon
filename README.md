@@ -1,4 +1,4 @@
-# get-icon
+# get-app-icon
 
 > Get the icon of app or file. (macOS and Windows)
 

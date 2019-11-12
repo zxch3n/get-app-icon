@@ -1,5 +1,5 @@
 {
-  "name": "get-icon",
+  "name": "get-app-icon",
   "version": "1.0.0",
   "description": "Get desktop application icon",
   "main": "dist/index.js",
@@ -15,5 +15,8 @@
     "file-icon": "^3.1.0",
     "icon-extractor": "^1.0.3",
     "typescript": "^3.7.2"
+  },
+  "repository": {
+    "url": "https://github.com/zxch3n/get-icon"
   }
 }
