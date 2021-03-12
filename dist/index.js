@@ -1,4 +1,23 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -39,44 +58,45 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.extractIcon = void 0;
 // @ts-ignore
 var file_icon_1 = __importDefault(require("file-icon"));
-// @ts-ignore
-var icon_extractor_1 = __importDefault(require("icon-extractor"));
+var winIcon;
 function extractIcon(path) {
     return __awaiter(this, void 0, void 0, function () {
         var buffer;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    if (!(process.platform === 'darwin')) return [3 /*break*/, 2];
+                    if (!(process.platform === "darwin")) return [3 /*break*/, 2];
                     return [4 /*yield*/, file_icon_1.default.buffer(path)];
                 case 1:
                     buffer = _a.sent();
-                    return [2 /*return*/, "data:image/png;base64," + buffer.toString('base64')];
+                    return [2 /*return*/, "data:image/png;base64," + buffer.toString("base64")];
                 case 2:
-                    if (process.platform === 'win32') {
-                        return [2 /*return*/, new Promise(function (resolve, reject) {
-                                var resolved = false;
-                                icon_extractor_1.default.emitter.on('icon', function (data) {
-                                    if (data.Context === path) {
-                                        resolved = true;
-                                        resolve("data:image/png;base64," + data.Base64ImageData);
-                                    }
-                                });
-                                icon_extractor_1.default.getIcon(path, path);
-                                setTimeout(function () {
-                                    if (!resolved) {
-                                        reject();
-                                    }
-                                }, 3000);
-                            })];
-                    }
-                    else {
-                        throw new Error('Not implemented');
-                    }
-                    _a.label = 3;
-                case 3: return [2 /*return*/];
+                    if (!(process.platform === "win32")) return [3 /*break*/, 5];
+                    if (!!winIcon) return [3 /*break*/, 4];
+                    return [4 /*yield*/, Promise.resolve().then(function () { return __importStar(require("icon-extractor")); })];
+                case 3:
+                    // @ts-ignore
+                    winIcon = _a.sent();
+                    _a.label = 4;
+                case 4: return [2 /*return*/, new Promise(function (resolve, reject) {
+                        var resolved = false;
+                        winIcon.emitter.on("icon", function (data) {
+                            if (data.Context === path) {
+                                resolved = true;
+                                resolve("data:image/png;base64," + data.Base64ImageData);
+                            }
+                        });
+                        winIcon.getIcon(path, path);
+                        setTimeout(function () {
+                            if (!resolved) {
+                                reject();
+                            }
+                        }, 3000);
+                    })];
+                case 5: throw new Error("Not implemented");
             }
         });
     });
